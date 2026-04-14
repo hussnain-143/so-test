@@ -1,0 +1,5 @@
+/* Additional globals for variables if missing */
+:root {
+  --primary: #5ac528;
+  --primary-hover: #4ea821;
+}

@@ -1,0 +1,94 @@
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.booking-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+  border: 1px solid var(--border-color);
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: block;
+}
+.booking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.booking-status-tags {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.booking-badge, .payment-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Booking Status Badge Colors - Matching UserManagement logic */
+.booking-badge.badge-requested { background: #eff6ff; color: #2563eb; }
+.booking-badge.badge-accepted { background: #f0fdf4; color: #16a34a; }
+.booking-badge.badge-in-progress { background: #fefce8; color: #ca8a04; }
+.booking-badge.badge-completed { background: #f0fdf4; color: #16a34a; }
+.booking-badge.badge-cancelled { background: #fff1f2; color: #e11d48; }
+.booking-badge.badge-declined { background: #f8fafc; color: #475569; }
+.booking-badge.badge-in-dispute { background: #fff7ed; color: #ea580c; }
+.booking-badge.badge-no-show { background: #f1f5f9; color: #64748b; }
+
+/* Payment Status Badge Colors */
+.payment-badge.badge-in-escrow { background: #f0f9ff; color: #0ea5e9; border: 1px solid #bae6fd; }
+.payment-badge.badge-paid-out { background: #f0fdf4; color: #16a34a; border: 1px solid #bbfcce; }
+.payment-badge.badge-refund-pending { background: #fffbeb; color: #d97706; border: 1px solid #fef3c7; }
+.payment-badge.badge-refunded { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.payment-badge.badge-on-hold { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+
+.booking-id {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.booking-service {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+.booking-people {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+.booking-person {
+  margin-bottom: 6px;
+}
+.booking-person span {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.booking-meta {
+  display: flex;
+  gap: 20px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

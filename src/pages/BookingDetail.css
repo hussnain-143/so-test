@@ -1,0 +1,242 @@
+.booking-detail-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.booking-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.booking-id {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.booking-service-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.booking-service-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.booking-points-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.point-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.point-item span {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.detail-two-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.detail-card {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.person-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.person-avatar-box {
+  width: 44px;
+  height: 44px;
+  background: #f0fdf4;
+  color: var(--primary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.person-avatar-box.prof {
+  background: #eff6ff;
+  color: #3b82f6;
+}
+
+.person-name {
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 2px 0;
+}
+
+.person-contact {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+}
+
+.payment-row.highlight {
+  color: #d97706;
+}
+
+.payment-row.payout {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.95rem;
+}
+
+.payout-amount {
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.notes-textarea {
+  width: 100%;
+  min-height: 120px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 0.95rem;
+  outline: none;
+  background: #f8fafc;
+}
+
+.notes-textarea:focus {
+  border-color: var(--primary);
+  background: white;
+}
+
+.admin-actions-section {
+  padding: 32px;
+  margin-top: 24px;
+}
+
+.status-update-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  max-width: 600px;
+}
+
+.dropdown-with-label {
+  flex: 1;
+}
+
+.dropdown-with-label label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+
+.btn-lg {
+  height: 48px;
+  padding: 0 32px;
+}
+
+.action-card-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+}
+
+.action-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.btn-refund { color: #e11d48; background: #fff1f2; border-color: #fecdd3; }
+.btn-hold { color: #d97706; background: #fffbeb; border-color: #fef3c7; }
+.btn-release { color: #16a34a; background: #f0fdf4; border-color: #dcfce7; }
+.btn-stop { color: #64748b; background: #f8fafc; border-color: #e2e8f0; }
+
+.divider-light {
+  height: 1px;
+  background: #f1f5f9;
+  width: 100%;
+}
+
+.payment-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.edit-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.small-edit-input {
+  border: none;
+  background: transparent;
+  width: 50px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  outline: none;
+  text-align: right;
+  padding: 0;
+}
+
+.small-edit-input::-webkit-inner-spin-button,
+.small-edit-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

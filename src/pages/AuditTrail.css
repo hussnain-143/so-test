@@ -1,0 +1,65 @@
+.audit-logs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+}
+
+.audit-log-item {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.audit-log-item:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(92, 199, 40, 0.05);
+}
+
+.audit-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.audit-action-box {
+  display: flex;
+  gap: 16px;
+}
+
+.audit-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.audit-details h3 {
+  margin: 0;
+  color: var(--text-main);
+}
+
+.audit-timestamp {
+  text-align: right;
+  min-width: 120px;
+}
+
+.timeline-connector {
+  position: absolute;
+  left: 47px;
+  top: 72px;
+  bottom: -16px;
+  width: 2px;
+  background: #f1f5f9;
+  z-index: 0;
+}
+
+.audit-log-item:last-child .timeline-connector {
+  display: none;
+}
