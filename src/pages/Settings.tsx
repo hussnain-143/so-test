@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Shield, Clock, Bell } from 'lucide-react';
+import { ArrowLeft, Shield, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './Settings.css';
 

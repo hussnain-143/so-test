@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, AlertTriangle, Trash2, XCircle, RefreshCcw, Pause, Play, RotateCcw } from 'lucide-react';
+import { CheckCircle2, XCircle, RefreshCcw, Pause, Play } from 'lucide-react';
 import './Modal.css';
 
 interface ModalProps {

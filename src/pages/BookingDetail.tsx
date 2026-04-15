@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Calendar, Clock, DollarSign, MapPin, User, Briefcase, Wallet, RefreshCcw, Pause, Play, Ban, Edit2, Save, XCircle } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, Calendar, Clock, DollarSign, MapPin, User, RefreshCcw, Pause, Play, Ban, XCircle, RotateCcw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Modal from '../components/Modal';
 import './BookingDetail.css';
 
 const BookingDetail: React.FC = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  // const { id } = useParams();
 
   // Financial State
-  const [basePrice, setBasePrice] = useState(120);
-  const [soloFeePercent, setSoloFeePercent] = useState(15);
+  const basePrice = 120;
+  const soloFeePercent = 15;
   const stripeFee = 3.78; // Fixed for demo
-  const [isEditingFees, setIsEditingFees] = useState(false);
 
   const soloFeeAmount = (basePrice * soloFeePercent) / 100;
   const netPayout = basePrice - soloFeeAmount - stripeFee;
@@ -23,7 +22,7 @@ const BookingDetail: React.FC = () => {
   const [notes, setNotes] = useState('Customer prefers morning sessions.');
   
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'success' | 'warning' | 'danger'>('success');
+  const [modalType, setModalType] = useState<'success' | 'warning' | 'danger' | 'info'>('success');
   const [modalTitle, setModalTitle] = useState('');
   const [modalDescription, setModalDescription] = useState('');
   const [modalIcon, setModalIcon] = useState<React.ReactNode>(null);
@@ -77,8 +76,8 @@ const BookingDetail: React.FC = () => {
             <div className="flex justify-between items-start mb-2">
               <div className="booking-id">#BK1001</div>
               <div className="flex gap-2">
-                <span className={`booking-badge badge-requested`}>Requested</span>
-                <span className={`payment-badge badge-in-escrow`}>In Escrow</span>
+                <span className={`booking-badge badge-${bookingStatus.toLowerCase().replace(' ', '-')}`}>{bookingStatus}</span>
+                <span className={`payment-badge badge-${paymentStatus.toLowerCase().replace(' ', '-')}`}>{paymentStatus}</span>
               </div>
             </div>
             <div className="booking-service-title">Personal Training Session</div>
