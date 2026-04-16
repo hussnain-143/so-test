@@ -38,7 +38,11 @@ const useApi = <T = any>() => {
     }
   }, []);
 
-  return { data, loading, error, request };
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
+
+  return { data, loading, error, request, clearError };
 };
 
 export default useApi;
