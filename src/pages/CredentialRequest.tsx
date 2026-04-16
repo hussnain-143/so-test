@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Mail, Upload } from 'lucide-react';
+import { User, Mail, Upload, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './CredentialRequest.css';
 import logo from '../assets/logo.png';
@@ -11,6 +11,7 @@ const CredentialRequest: React.FC = () => {
     firstName: '',
     lastName: '',
     email: '',
+    adminCode: '',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,10 +33,10 @@ const CredentialRequest: React.FC = () => {
     }
   };
 
-  const handleRequestCredential = (e: React.FormEvent) => {
+  const handleCreateAccount = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Request for Credential:', { ...formData, profilePic });
-    alert(`Credential request submitted for ${formData.firstName} ${formData.lastName}`);
+    console.log('Account Creation:', { ...formData, profilePic });
+    alert(`Account created successfully for ${formData.firstName} ${formData.lastName} with admin code: ${formData.adminCode}! Please sign in.`);
     navigate('/login');
   };
 
@@ -47,8 +48,8 @@ const CredentialRequest: React.FC = () => {
         </div>
 
         <div className="credential-header">
-          <h1>Account Verification</h1>
-          <p>Provide your information to request a password reset or new credentials.</p>
+          <h1>Admin Registration</h1>
+          <p>This registration link was provided specifically for you. Please complete your account setup.</p>
         </div>
 
         <form style={{ marginTop: 24 }}>
@@ -128,25 +129,33 @@ const CredentialRequest: React.FC = () => {
             </div>
           </div>
 
+          {/* Admin Code Field */}
+          <div className="form-group">
+            <label className="form-label">Admin Code <span>*</span></label>
+            <div className="form-input-container">
+              <Shield size={18} className="form-icon" />
+              <input
+                type="text"
+                name="adminCode"
+                value={formData.adminCode}
+                onChange={handleInputChange}
+                required
+                className="form-input"
+                placeholder="Enter your admin code"
+              />
+            </div>
+          </div>
+
           {/* Action Buttons */}
           <div className="credential-actions">
             <button
               type="submit"
-              onClick={handleRequestCredential}
+              onClick={handleCreateAccount}
               className="btn btn-primary w-full"
               style={{ padding: '14px' }}
             >
-              Request New Credentials
+              Create Account
             </button>
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: 16 }}>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              Remember your password?{' '}
-              <a href="/login" style={{ color: 'var(--primary)', fontWeight: 500 }}>
-                Sign In
-              </a>
-            </p>
           </div>
         </form>
       </div>

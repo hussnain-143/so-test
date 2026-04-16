@@ -71,15 +71,6 @@ const Login: React.FC = () => {
             Sign In
           </button>
         </form>
-
-        <div style={{ textAlign: 'center', marginTop: 20, paddingTop: 20, borderTop: '1px solid #e5e7eb' }}>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 12 }}>
-            Don't have credentials?
-          </p>
-          <Link to="/credential-request" className="btn btn-secondary w-full" style={{ padding: '12px', textDecoration: 'none', display: 'block' }}>
-            Request Credentials
-          </Link>
-        </div>
       </div>
     </div>
   );

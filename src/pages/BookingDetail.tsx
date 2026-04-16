@@ -92,14 +92,10 @@ const BookingDetail: React.FC = () => {
           <div className="point-item"><MapPin size={16} /> Location: <span>Customer Site</span></div>
         </div>
 
-      <div className="address-section green-bg mt-4">
-        <div className="address-label">Address</div>
-        <div className="address-text">123 Main St, Dublin, Ireland.</div>
-      </div>
       </div>
 
       <div className="customer-notes-card mt-0 mb-4">
-        <div className="notes-label">Customer Notes:</div>
+        <div className="notes-label">Job Required:</div>
         <div className="notes-text">Please bring yoga mat</div>
       </div>
 
