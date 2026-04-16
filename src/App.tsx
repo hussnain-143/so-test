@@ -16,10 +16,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/credential-request" element={<CredentialRequest />} />
-        
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
@@ -31,6 +27,9 @@ function App() {
           <Route path="audit" element={<AuditTrail />} />
           <Route path="settings" element={<Settings />} />
         </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin-registration-invite" element={<CredentialRequest />} />
       </Routes>
     </Router>
   );

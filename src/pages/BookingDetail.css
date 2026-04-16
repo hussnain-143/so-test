@@ -232,25 +232,6 @@
 
 /* Added styles for layout update */
 
-.green-bg {
-  background: #e8faed;
-  border-radius: 8px;
-  padding: 16px;
-  margin-top: 12px;
-}
-
-.address-label {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: #1a1a1a;
-  margin-bottom: 4px;
-}
-
-.address-text {
-  font-size: 0.9rem;
-  color: #4a4a4a;
-}
-
 .customer-notes-card {
   background: #fffcf0;
   border: 1px solid #fef08a;
@@ -425,8 +406,7 @@
   .booking-detail-card,
   .detail-card,
   .admin-actions-section,
-  .customer-notes-card,
-  .green-bg {
+  .customer-notes-card {
     padding: 16px;
   }
 
