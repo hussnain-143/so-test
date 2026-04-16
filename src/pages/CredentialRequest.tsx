@@ -10,6 +10,7 @@ import Modal from '../components/Modal';
 const CredentialRequest: React.FC = () => {
   const navigate = useNavigate();
   const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [profileFile, setProfileFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -30,6 +31,7 @@ const CredentialRequest: React.FC = () => {
   const handleProfilePicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setProfileFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfilePic(reader.result as string);
@@ -53,15 +55,21 @@ const CredentialRequest: React.FC = () => {
       return;
     }
     try {
+      const formPayload = new FormData();
+      formPayload.append('firstName', formData.firstName);
+      formPayload.append('lastName', formData.lastName);
+      formPayload.append('email', formData.email);
+      formPayload.append('secretKey', formData.secretKey);
+      if (profileFile) {
+        formPayload.append('profile', profileFile);
+      }
+
       const res = await request({
         url: '/onboard',
         method: 'POST',
-        data: {
-          ...formData,
-          ...(profilePic ? { profile: profilePic } : {}),
-        },
+        data: formPayload,
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log(res);
       if (res.success) {
         navigate('/login');
       }
