@@ -14,9 +14,9 @@ const CredentialRequest: React.FC = () => {
     firstName: '',
     lastName: '',
     email: '',
-    adminCode: '',
+    secretKey: '',
   });
-  const { request, loading, error } = useApi();
+  const { request, loading, error, clearError } = useApi();
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,30 +53,31 @@ const CredentialRequest: React.FC = () => {
       return;
     }
     try {
-
       const res = await request({
         url: '/onboard',
         method: 'POST',
-        data: formData,
+        data: {
+          ...formData,
+          ...(profilePic ? { profile: profilePic } : {}),
+        },
       });
       console.log(res);
       if (res.success) {
         navigate('/login');
       }
-
     } catch (error) {
-
+      // error shown via modal
     }
 
   };
 
   return (
     <>{error ? <Modal
-      isOpen={true}
-      onClose={() => { }}
-      onConfirm={() => { }}
+      isOpen={!!error}
+      onClose={clearError}
+      onConfirm={clearError}
       title="Error"
-      description={error}
+      description={typeof error === 'string' ? error : (error?.message || JSON.stringify(error))}
       confirmText="OK"
       type="danger"
       icon={<XCircle size={24} />}
@@ -93,7 +94,7 @@ const CredentialRequest: React.FC = () => {
             <p>This registration link was provided specifically for you. Please complete your account setup.</p>
           </div>
 
-          <form style={{ marginTop: 24 }}>
+          <form style={{ marginTop: 24 }} >
             {/* Profile Picture Upload */}
             <div className="form-group">
               <label className="form-label">Profile Picture</label>
@@ -180,8 +181,8 @@ const CredentialRequest: React.FC = () => {
                 <Shield size={18} className="form-icon" />
                 <input
                   type="text"
-                  name="adminCode"
-                  value={formData.adminCode}
+                  name="secretKey"
+                  value={formData.secretKey}
                   onChange={handleInputChange}
                   required
                   className="form-input"
