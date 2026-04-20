@@ -16,8 +16,9 @@ const Loader: React.FC<LoaderProps> = ({
   
   return (
     <div className={containerClass}>
-      <div className={`solo-spinner ${size}`} style={{ borderTopColor: color }}>
-        <div className="inner-dot" style={{ background: color }}></div>
+      <div className={`solo-unique-loader ${size}`} style={{ color }}>
+        <div className="loader-arc outer"></div>
+        <div className="loader-arc inner"></div>
       </div>
     </div>
   );

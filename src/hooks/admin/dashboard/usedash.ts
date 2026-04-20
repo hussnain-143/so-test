@@ -39,3 +39,16 @@ export const useGetJobsChart = () => {
     };
     return { getJobsChart, loading, error, data, clearError };
 }
+
+export const useGetFeesTrend = () => {
+    const { request, loading, error, data, clearError } = useApi();
+    const getFeesTrend = async (range: string) => {
+        const res = await request({
+            url: `/fees-trend?range=${range}`,
+            method: "GET",
+            withCredentials: true,
+        });
+        return res;
+    };
+    return { getFeesTrend, loading, error, data, clearError };
+}
