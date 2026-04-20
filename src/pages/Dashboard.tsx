@@ -1,46 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Briefcase, FileCheck, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, LineChart, Line, Rectangle } from 'recharts';
 import './Dashboard.css';
-import { useGetDashboardStats, useGetRevenueStats, useGetJobsChart } from '../hooks/admin/dashboard/usedash';
+import { useGetDashboardStats, useGetRevenueStats, useGetJobsChart, useGetFeesTrend } from '../hooks/admin/dashboard/usedash';
+import Loader from '../components/Loader';
+import InternalLoader from '../components/InternalLoader';
 
 
-const jobsDataWeek = [
-  { name: 'Mon', completed: 15, inProgress: 8, cancelled: 2 },
-  { name: 'Tue', completed: 28, inProgress: 14, cancelled: 3 },
-  { name: 'Wed', completed: 18, inProgress: 6, cancelled: 1 },
-  { name: 'Thu', completed: 22, inProgress: 10, cancelled: 3 },
-  { name: 'Fri', completed: 18, inProgress: 14, cancelled: 4 },
-  { name: 'Sat', completed: 28, inProgress: 10, cancelled: 5 },
-  { name: 'Sun', completed: 15, inProgress: 4, cancelled: 2 },
-];
+const CustomBar = (props: any) => {
+  const { height, payload, dataKey } = props;
+  if (!height || height <= 0) return null;
 
-const jobsDataMonth = [
-  { name: 'Wk 1', completed: 85, inProgress: 40, cancelled: 12 },
-  { name: 'Wk 2', completed: 110, inProgress: 55, cancelled: 8 },
-  { name: 'Wk 3', completed: 95, inProgress: 35, cancelled: 15 },
-  { name: 'Wk 4', completed: 125, inProgress: 60, cancelled: 10 },
-];
+  let radius: [number, number, number, number] = [0, 0, 0, 0];
 
-const feesDataWeek = [
-  { name: 'Mon', fee: 400 }, { name: 'Tue', fee: 1000 }, { name: 'Wed', fee: 1200 }, { name: 'Thu', fee: 900 }, { name: 'Fri', fee: 600 }, { name: 'Sat', fee: 1600 }, { name: 'Sun', fee: 900 },
-];
+  if (dataKey === 'completed') {
+    // Bottom bar: round bottom corners usually, 
+    // but if it's the only bar, round all corners.
+    const isTop = (!payload.inProgress || payload.inProgress === 0) && (!payload.cancelled || payload.cancelled === 0);
+    radius = isTop ? [8, 8, 8, 8] : [0, 0, 8, 8];
+  } else if (dataKey === 'inProgress') {
+    // Middle bar: round top if no cancelled bar is on top
+    const isTop = !payload.cancelled || payload.cancelled === 0;
+    radius = isTop ? [8, 8, 0, 0] : [0, 0, 0, 0];
+  } else if (dataKey === 'cancelled') {
+    // Top-most bar: always round top corners
+    radius = [8, 8, 0, 0];
+  }
 
-const feesDataMonth = [
-  { name: 'Wk 1', fee: 4500 }, { name: 'Wk 2', fee: 6200 }, { name: 'Wk 3', fee: 5100 }, { name: 'Wk 4', fee: 7800 },
-];
+  return <Rectangle {...props} radius={radius} />;
+};
 
 const Dashboard: React.FC = () => {
   const [feesRange, setFeesRange] = useState('today');
-  const [jobsRange, setJobsRange] = useState('week');
-  const [trendRange, setTrendRange] = useState('week');
+  const [jobsRange, setJobsRange] = useState('this_week');
+  const [trendRange, setTrendRange] = useState('this_week');
   const [topCards, setTopCards] = useState<any>(null);
   const [chartData, setChartData] = useState<any>([]);
+  const [trendChartData, setTrendChartData] = useState<any>([]);
   const [revenueData, setRevenueData] = useState<any>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isRevenueLoading, setIsRevenueLoading] = useState(false);
 
   const { getDashboardStats } = useGetDashboardStats();
   const { getRevenueStats } = useGetRevenueStats();
   const { getJobsChart } = useGetJobsChart();
+  const { getFeesTrend } = useGetFeesTrend();
 
   const fetchDashboardStats = async () => {
     const res = await getDashboardStats();
@@ -48,10 +52,15 @@ const Dashboard: React.FC = () => {
   };
 
   const fetchRevenueData = async (range: string) => {
-    // Map frontend range values to API values
-    const apiRange = range === 'today' ? '1' : (range === '7d' ? '7' : '30');
-    const res = await getRevenueStats(apiRange);
-    setRevenueData(res.data);
+    setIsRevenueLoading(true);
+    try {
+      // Map frontend range values to API values
+      const apiRange = range === 'today' ? '1' : (range === '7d' ? '7' : '30');
+      const res = await getRevenueStats(apiRange);
+      setRevenueData(res.data);
+    } finally {
+      setIsRevenueLoading(false);
+    }
   };
 
   const fetchChartData = async (range: string) => {
@@ -59,17 +68,47 @@ const Dashboard: React.FC = () => {
     setChartData(res.data);
   };
 
+  const fetchTrendChartData = async (range: string) => {
+    const res = await getFeesTrend(range);
+    setTrendChartData(res.data);
+  };
+
   useEffect(() => {
-    fetchDashboardStats();
+    const loadAllData = async () => {
+      setIsInitialLoading(true);
+      try {
+        await Promise.all([
+          fetchDashboardStats(),
+          fetchRevenueData(feesRange),
+          fetchChartData(jobsRange),
+          fetchTrendChartData(trendRange)
+        ]);
+      } catch (error) {
+        console.error("Error loading dashboard data:", error);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+    loadAllData();
   }, []);
 
   useEffect(() => {
-    fetchRevenueData(feesRange);
+    if (!isInitialLoading) {
+      fetchRevenueData(feesRange);
+    }
   }, [feesRange]);
 
   useEffect(() => {
-    fetchChartData(jobsRange);
+    if (!isInitialLoading) {
+      fetchChartData(jobsRange);
+    }
   }, [jobsRange]);
+
+  useEffect(() => {
+    if (!isInitialLoading) {
+      fetchTrendChartData(trendRange);
+    }
+  }, [trendRange]);
 
   const getFeesAmount = () => {
     if (!revenueData) return '...';
@@ -85,10 +124,12 @@ const Dashboard: React.FC = () => {
 
   const getJobsData = () => chartData;
 
-  const getTrendData = () => {
-    if (trendRange === '6m' || trendRange === '12m') return feesDataMonth; // Demo fallback
-    return trendRange === 'week' ? feesDataWeek : feesDataMonth;
-  };
+  const getTrendData = () => trendChartData;
+  console.log(trendChartData);
+
+  if (isInitialLoading) {
+    return <Loader />;
+  }
 
   return (
     <div>
@@ -187,10 +228,16 @@ const Dashboard: React.FC = () => {
             <option value="30d">Last 30 days</option>
           </select>
         </div>
-        <div className="revenue-content">
-          <div className="revenue-amount"><span>💰</span>{getFeesAmount()}</div>
-          <div style={{ color: 'var(--primary)', fontSize: '0.85rem', marginTop: '8px' }}>{getFeesGrowth()}</div>
-        </div>
+        {isRevenueLoading ? (
+          <div className="revenue-content">
+            <InternalLoader size='small' />
+          </div>
+        ) : (
+          <div className="revenue-content">
+            <div className="revenue-amount"><span>💰</span>{getFeesAmount()}</div>
+            <div style={{ color: 'var(--primary)', fontSize: '0.85rem', marginTop: '8px' }}>{getFeesGrowth()}</div>
+          </div>
+        )}
       </div>
 
       <div className="charts-row">
@@ -203,8 +250,10 @@ const Dashboard: React.FC = () => {
               value={jobsRange}
               onChange={(e) => setJobsRange(e.target.value)}
             >
-              <option value="week">This week</option>
-              <option value="month">Last month</option>
+              <option value="this_week">This week</option>
+              <option value="this_month">This month</option>
+              <option value="last_month">Last month</option>
+              <option value="6m">Last 6 months</option>
             </select>
           </div>
           <div style={{ height: 250 }}>
@@ -212,11 +261,16 @@ const Dashboard: React.FC = () => {
               <BarChart data={getJobsData()}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 10 }}
+                  domain={[0, (dataMax: number) => dataMax + 1]}
+                />
                 <RechartsTooltip />
-                <Bar dataKey="completed" stackId="a" fill="#bbf7d0" radius={[0, 0, 4, 4]} />
-                <Bar dataKey="inProgress" stackId="a" fill="#fef08a" />
-                <Bar dataKey="cancelled" stackId="a" fill="#fecaca" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="completed" stackId="a" fill="#bbf7d0" shape={<CustomBar />} />
+                <Bar dataKey="inProgress" stackId="a" fill="#fef08a" shape={<CustomBar />} />
+                <Bar dataKey="cancelled" stackId="a" fill="#fecaca" shape={<CustomBar />} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -236,10 +290,10 @@ const Dashboard: React.FC = () => {
               value={trendRange}
               onChange={(e) => setTrendRange(e.target.value)}
             >
-              <option value="week">This week</option>
-              <option value="month">Last month</option>
+              <option value="this_week">This week</option>
+              <option value="this_month">This month</option>
+              <option value="last_month">Last month</option>
               <option value="6m">Last 6 months</option>
-              <option value="12m">Last 12 months</option>
             </select>
           </div>
           <div style={{ height: 250 }}>

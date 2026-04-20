@@ -21,21 +21,21 @@ const BookingManagement: React.FC = () => {
   const [paymentFilter, setPaymentFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(4);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+  // React.useEffect(() => {
+  //   const timer = setTimeout(() => setIsLoading(false), 1500);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   const filteredBookings = initialBookings.filter(b => {
     const matchesStatus = statusFilter === 'ALL' || b.status === statusFilter;
     const matchesPayment = paymentFilter === 'ALL' || b.payment === paymentFilter;
     const matchesSearch = b.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.service.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          b.professional.toLowerCase().includes(searchQuery.toLowerCase());
-    
+      b.service.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      b.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      b.professional.toLowerCase().includes(searchQuery.toLowerCase());
+
     return matchesStatus && matchesPayment && matchesSearch;
   });
 
@@ -47,7 +47,7 @@ const BookingManagement: React.FC = () => {
 
   return (
     <div>
-      {isLoading && <Loader fullScreen={true} />}
+      {/* {isLoading && <Loader fullScreen={true} />} */}
       <div className="page-header">
         <div className="flex items-center gap-4">
           <button className="back-btn" onClick={() => navigate(-1)}>
@@ -56,9 +56,9 @@ const BookingManagement: React.FC = () => {
           <h1 className="page-title">Booking Management</h1>
         </div>
         <div className="filters-row">
-          <select 
-            className="form-input" 
-            style={{width: 180}}
+          <select
+            className="form-input"
+            style={{ width: 180 }}
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -73,9 +73,9 @@ const BookingManagement: React.FC = () => {
             <option value="No Show-Customer">No Show-Customer</option>
             <option value="No Show-Professional">No Show-Professional</option>
           </select>
-          <select 
-            className="form-input" 
-            style={{width: 180}}
+          <select
+            className="form-input"
+            style={{ width: 180 }}
             value={paymentFilter}
             onChange={(e) => setPaymentFilter(e.target.value)}
           >
@@ -87,9 +87,9 @@ const BookingManagement: React.FC = () => {
             <option value="On Hold">On Hold</option>
           </select>
           <div className="search-input-container">
-            <input 
-              type="text" 
-              placeholder="Search bookings..." 
+            <input
+              type="text"
+              placeholder="Search bookings..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -100,21 +100,21 @@ const BookingManagement: React.FC = () => {
 
       <div className="summary-cards">
         <div className="summary-card">
-          <div style={{fontSize: '2rem', fontWeight: 700, marginBottom: '8px'}}>8</div>
-          <div className="text-muted" style={{fontSize: '0.9rem'}}>Total Bookings</div>
+          <div style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '8px' }}>8</div>
+          <div className="text-muted" style={{ fontSize: '0.9rem' }}>Total Bookings</div>
         </div>
         <div className="summary-card">
-          <div style={{fontSize: '2rem', fontWeight: 700, marginBottom: '8px'}}>1</div>
-          <div className="text-muted" style={{fontSize: '0.9rem'}}>In Dispute</div>
+          <div style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '8px' }}>1</div>
+          <div className="text-muted" style={{ fontSize: '0.9rem' }}>In Dispute</div>
         </div>
         <div className="summary-card">
-          <div style={{fontSize: '2rem', fontWeight: 700, marginBottom: '8px'}}>1</div>
-          <div className="text-muted" style={{fontSize: '0.9rem'}}>Completed</div>
+          <div style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '8px' }}>1</div>
+          <div className="text-muted" style={{ fontSize: '0.9rem' }}>Completed</div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center" style={{marginBottom: 16}}>
-        <div style={{fontSize: '0.9rem', color: 'var(--text-muted)'}}>{filteredBookings.length} bookings found</div>
+      <div className="flex justify-between items-center" style={{ marginBottom: 16 }}>
+        <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{filteredBookings.length} bookings found</div>
       </div>
 
       <div className="booking-grid">
@@ -152,17 +152,17 @@ const BookingManagement: React.FC = () => {
 
       {filteredBookings.length > visibleCount && (
         <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <button 
+          <button
             type="button"
-            className="text-muted text-sm font-medium" 
-            style={{background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline'}}
+            className="text-muted text-sm font-medium"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
             onClick={handleViewAll}
           >
             View All Bookings
           </button>
         </div>
       )}
-      <div style={{height: 60}}></div>
+      <div style={{ height: 60 }}></div>
     </div>
   );
 };
