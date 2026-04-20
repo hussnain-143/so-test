@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Users, Briefcase, FileCheck, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import './Dashboard.css';
-import { useGetDashboardStats, useGetRevenueStats } from '../hooks/admin/dashboard/usedash';
+import { useGetDashboardStats, useGetRevenueStats, useGetJobsChart } from '../hooks/admin/dashboard/usedash';
 
 
 const jobsDataWeek = [
@@ -35,10 +35,12 @@ const Dashboard: React.FC = () => {
   const [jobsRange, setJobsRange] = useState('week');
   const [trendRange, setTrendRange] = useState('week');
   const [topCards, setTopCards] = useState<any>(null);
+  const [chartData, setChartData] = useState<any>([]);
   const [revenueData, setRevenueData] = useState<any>(null);
 
   const { getDashboardStats } = useGetDashboardStats();
   const { getRevenueStats } = useGetRevenueStats();
+  const { getJobsChart } = useGetJobsChart();
 
   const fetchDashboardStats = async () => {
     const res = await getDashboardStats();
@@ -52,6 +54,11 @@ const Dashboard: React.FC = () => {
     setRevenueData(res.data);
   };
 
+  const fetchChartData = async (range: string) => {
+    const res = await getJobsChart(range);
+    setChartData(res.data);
+  };
+
   useEffect(() => {
     fetchDashboardStats();
   }, []);
@@ -59,6 +66,10 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchRevenueData(feesRange);
   }, [feesRange]);
+
+  useEffect(() => {
+    fetchChartData(jobsRange);
+  }, [jobsRange]);
 
   const getFeesAmount = () => {
     if (!revenueData) return '...';
@@ -72,7 +83,7 @@ const Dashboard: React.FC = () => {
     return `${sign} ${Math.abs(revenueData.growth)}% from ${period}`;
   };
 
-  const getJobsData = () => jobsRange === 'week' ? jobsDataWeek : jobsDataMonth;
+  const getJobsData = () => chartData;
 
   const getTrendData = () => {
     if (trendRange === '6m' || trendRange === '12m') return feesDataMonth; // Demo fallback

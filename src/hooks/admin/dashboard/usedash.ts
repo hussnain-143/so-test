@@ -26,3 +26,16 @@ export const useGetRevenueStats = () => {
     };
     return { getRevenueStats, loading, error, data, clearError };
 }
+
+export const useGetJobsChart = () => {
+    const { request, loading, error, data, clearError } = useApi();
+    const getJobsChart = async (range: string) => {
+        const res = await request({
+            url: `/jobs-chart?range=${range}`,
+            method: "GET",
+            withCredentials: true,
+        });
+        return res;
+    };
+    return { getJobsChart, loading, error, data, clearError };
+}
