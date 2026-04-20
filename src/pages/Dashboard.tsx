@@ -40,6 +40,7 @@ const Dashboard: React.FC = () => {
   const fetchData = async () => {
     const res = await getDashboardStats();
     setTopCards(res.data)
+    console.log(res.data)
   }
 
   useEffect(() => {
@@ -71,12 +72,12 @@ const Dashboard: React.FC = () => {
           <div className="stat-header">
             <div className="stat-icon"><Users size={20} /></div>
             <div>
-              <div className="stat-value">{topCards.totalUsers}</div>
+              <div className="stat-value">{topCards?.users?.total}</div>
               <div className="stat-title">Total Users</div>
             </div>
           </div>
           <div className="stat-footer">
-            {topCards.totalCustomers} Customers <br /> {topCards.totalProfessionals} Professionals
+            {topCards?.users?.customers} Customers <br /> {topCards?.users?.professionals} Professionals
           </div>
         </div>
 
@@ -84,12 +85,12 @@ const Dashboard: React.FC = () => {
           <div className="stat-header">
             <div className="stat-icon" style={{ background: '#e0f2fe', color: '#0ea5e9' }}><Users size={20} /></div>
             <div>
-              <div className="stat-value">{topCards.activeUsers}</div>
+              <div className="stat-value">{topCards?.activeUsers?.total}</div>
               <div className="stat-title">Active Users</div>
             </div>
           </div>
           <div className="stat-footer">
-            {topCards.activeCustomers} Customers <br /> {topCards.activeProfessionals} Professionals
+            {topCards?.activeUsers?.customers} Customers <br /> {topCards?.activeUsers?.professionals} Professionals
           </div>
         </div>
 
@@ -97,12 +98,12 @@ const Dashboard: React.FC = () => {
           <div className="stat-header">
             <div className="stat-icon" style={{ background: '#fce7f3', color: '#db2777' }}><FileCheck size={20} /></div>
             <div>
-              <div className="stat-value">{topCards.totalServices}</div>
+              <div className="stat-value">{topCards?.services?.total}</div>
               <div className="stat-title">Total Services</div>
             </div>
           </div>
           <div className="stat-footer" style={{ marginTop: 'auto', paddingTop: '16px' }}>
-            {topCards.totalCategories} categories
+            {topCards?.services?.categories} categories
           </div>
         </div>
 
@@ -110,12 +111,12 @@ const Dashboard: React.FC = () => {
           <div className="stat-header">
             <div className="stat-icon" style={{ background: '#e0e7ff', color: '#6366f1' }}><Briefcase size={20} /></div>
             <div>
-              <div className="stat-value">{topCards.totalJobs}</div>
+              <div className="stat-value">{topCards?.jobs?.total}</div>
               <div className="stat-title">Total Jobs</div>
             </div>
           </div>
           <div className="stat-footer" style={{ marginTop: 'auto', paddingTop: '16px' }}>
-            {topCards.totalJobs} This month
+            {topCards?.jobs?.thisMonth} this month
           </div>
         </div>
       </div>
